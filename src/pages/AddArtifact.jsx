@@ -191,7 +191,7 @@ const AddArtifact = () => {
               </label>
               <input
                 id="createdAt"
-                type="date"
+                type="text"
                 name="createdAt"
                 value={formData.createdAt}
                 className="mt-1 block px-3 w-full rounded-md border-gray-300"
@@ -279,7 +279,7 @@ const AddArtifact = () => {
         </form>
       </main>
       <footer>
-        <Footer />
+            <Footer className="bottom-0 left-0 w-full z-50 bg-base-200" />
       </footer>
     </div>
   );
