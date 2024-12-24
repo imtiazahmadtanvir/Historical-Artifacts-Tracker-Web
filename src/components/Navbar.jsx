@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
-import logo from "../assets/react.svg"; // Replace with your actual logo path
+import logo from "../assets/logo.jpg"; // Replace with your actual logo path
 import defaultPic from "../assets/defulteimage.png"; // Default image for user avatar
 import { AuthContext } from "../provider/AuthProvider";
 
@@ -26,7 +26,7 @@ const Navbar = () => {
         <Link to="/all-artifacts" className="btn btn-ghost hover:bg-gray-300 dark:hover:bg-gray-700">
           All Artifacts
         </Link>
-        <Link to="/add-artifact" className="btn btn-ghost hover:bg-gray-300 dark:hover:bg-gray-700">
+        <Link to="/add-artifacts" className="btn btn-ghost hover:bg-gray-300 dark:hover:bg-gray-700">
           Add Artifact
         </Link>
         <Link to="/liked-artifacts" className="btn btn-ghost hover:bg-gray-300 dark:hover:bg-gray-700">
@@ -113,7 +113,7 @@ const Navbar = () => {
               All Artifacts
             </Link>
             <Link
-              to="/add-artifact"
+              to="/add-artifacts"
               className="btn btn-ghost w-full text-left hover:bg-gray-300 dark:hover:bg-gray-700"
             >
               Add Artifact
