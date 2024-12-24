@@ -50,6 +50,7 @@ const router = createBrowserRouter([
         <LikedArtifact />
       </PrivateRoute>
     ),
+    loader:()=>fetch(`http://localhost:5000/artifacts`),
     errorElement: <Errorpage />,
   },
   {
@@ -59,6 +60,7 @@ const router = createBrowserRouter([
         <MyArtifact />
       </PrivateRoute>
     ),
+    
     errorElement: <Errorpage />,
   },
   {
