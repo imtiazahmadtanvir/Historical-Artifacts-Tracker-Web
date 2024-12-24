@@ -11,7 +11,7 @@ import AllArtifactsPage from "../pages/AllArtifactsPage";
 import MyArtifact from "../pages/MyArtifact";
 import LikedArtifact from "../pages/LikedArtifact";
 import AddArtifact from "../pages/AddArtifact";
-
+import ArtifactDetails from "../pages/ArtifactDetails";
 
 const router = createBrowserRouter([
   {
@@ -26,42 +26,65 @@ const router = createBrowserRouter([
   },
   {
     path: "/add-artifacts",
-    element: <AddArtifact></AddArtifact>,
+    element: (
+      <PrivateRoute>
+        <AddArtifact />
+      </PrivateRoute>
+    ),
+    errorElement: <Errorpage />,
+  },
+  {
+    path: "/artifact/:id",
+    element: (
+      <PrivateRoute>
+        <ArtifactDetails />
+      </PrivateRoute>
+    ),
     errorElement: <Errorpage />,
   },
   {
     path: "/liked-artifacts",
-    element: <LikedArtifact></LikedArtifact>,
+    element: (
+      <PrivateRoute>
+        <LikedArtifact />
+      </PrivateRoute>
+    ),
     errorElement: <Errorpage />,
   },
   {
-    path: "/my-artifacts", 
-    element: <MyArtifact></MyArtifact> ,
+    path: "/my-artifacts",
+    element: (
+      <PrivateRoute>
+        <MyArtifact />
+      </PrivateRoute>
+    ),
     errorElement: <Errorpage />,
   },
   {
     path: "/profile",
-    element: <PrivateRoute><Profile /></PrivateRoute>, // Protected route
+    element: (
+      <PrivateRoute>
+        <Profile />
+      </PrivateRoute>
+    ),
     errorElement: <Errorpage />,
   },
   {
     path: "/auth",
     element: <AuthLayout />,
+    errorElement: <Errorpage />,
     children: [
       {
-        path: "/auth/login",
+        path: "login",
         element: <Signin />,
-        errorElement: <Errorpage />,
       },
       {
-        path: "/auth/register",
+        path: "register",
         element: <Register />,
-        errorElement: <Errorpage />,
       },
       {
-        path: "/auth/forgot",
+        path: "forgot",
         element: <ForgotPassword />,
-        errorElement: <Errorpage />,
       },
     ],
   },
