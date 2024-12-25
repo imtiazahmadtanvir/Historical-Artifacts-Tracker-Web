@@ -1,87 +1,92 @@
-import { Link, useLoaderData } from 'react-router-dom';
-import { FaArrowRight, FaHeart, FaCalendarAlt } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import default_Img from '../assets/bg4.jpg';
 
-const LikedArtifact = () => {
-  const artifacts = useLoaderData(); // Data fetched from the loader
+const LikedArtifacts = () => {
+  const [likedArtifacts, setLikedArtifacts] = useState([]);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  // Fetch Liked Artifacts from Local Storage
+  useEffect(() => {
+    try {
+      const storedArtifacts = JSON.parse(localStorage.getItem('likedArtifacts')) || [];
+      setLikedArtifacts(storedArtifacts);
+    } catch (err) {
+      setError('Failed to load liked artifacts from local storage');
+    }
+  }, []);
+
+  // Handle Navigation to Individual Artifact Details Page
+  const handleViewDetails = (id) => {
+    navigate(`/artifacts/${id}`);
+  };
+
+  // Clear Liked Artifacts
+  const handleClearLikes = () => {
+    localStorage.removeItem('likedArtifacts');
+    setLikedArtifacts([]);
+  };
+
+  if (error) {
+    return <div className="text-center py-10 text-red-500">{error}</div>;
+  }
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
-      {/* Navbar */}
-      <header>
-        <Navbar />
-      </header>
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      <Navbar />
 
-      {/* Main Content */}
-      <section className="flex-grow py-16 bg-gray-50">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold text-gray-800 mb-12">Liked Artifacts</h2>
+      <div className="container  mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
+        <h2 className="text-3xl font-bold mb-6 text-center">Liked Artifacts</h2>
 
-          {/* No Artifacts State */}
-          {!artifacts || artifacts.length === 0 ? (
-            <p className="text-gray-600 text-lg">You haven't liked any artifacts yet. Start exploring and like some artifacts to see them here!</p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {artifacts.map((artifact) => (
-                <div
-                  key={artifact._id}
-                  className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl"
+        {likedArtifacts.length === 0 ? (
+          <p className="text-center text-gray-500">No liked artifacts yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {likedArtifacts.map((artifact) => (
+              <div
+                key={artifact._id}
+                className="bg-white border rounded-lg shadow-md p-4 flex flex-col"
+              >
+                <img
+                  src={artifact.artifactImage || default_Img}
+                  alt={artifact.artifactName}
+                  className="w-full h-48 object-cover rounded-md mb-4"
+                />
+                <h3 className="text-xl font-semibold mb-2">{artifact.artifactName}</h3>
+                <p className="text-gray-600 mb-2"><strong>Type:</strong> {artifact.artifactType}</p>
+                <p className="text-gray-600 mb-2"><strong>Likes:</strong> {artifact.likes || 0}</p>
+                <button
+                  onClick={() => handleViewDetails(artifact._id)}
+                  className="mt-auto bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
                 >
-                  {/* Artifact Image */}
-                  <img
-                    src={artifact.artifactImage || default_Img}
-                    alt={artifact.artifactName || 'Artifact Image'}
-                    className="w-full h-40 object-cover"
-                    onError={(e) => {
-                      e.target.onerror = null; // Prevent infinite loop
-                      e.target.src = default_Img;
-                    }}
-                  />
+                  View Details
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
 
-                  {/* Artifact Details */}
-                  <div className="p-6">
-                    <h3 className="text-2xl font-semibold text-gray-800 mb-2 truncate">
-                      {artifact.artifactName || 'Unknown Artifact'}
-                    </h3>
-                    <p className="text-gray-600 text-sm mt-2 mb-4 truncate">
-                      {artifact.historicalContext || 'No historical context available.'}
-                    </p>
+        {/* Clear All Liked Artifacts Button */}
+        {likedArtifacts.length > 0 && (
+          <div className="flex justify-center mt-8">
+            <button
+              onClick={handleClearLikes}
+              className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-md"
+            >
+              Clear All Likes
+            </button>
+          </div>
+        )}
+      </div>
 
-                    {/* Likes & Discovered At */}
-                    <div className="flex justify-between items-center text-sm text-gray-600">
-                      <div className="flex items-center space-x-2">
-                        <FaHeart className="text-red-500" />
-                        <span>{artifact.likes || 0}</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <FaCalendarAlt />
-                        <span>{artifact.discoveredAt || 'Unknown'}</span>
-                      </div>
-                    </div>
-
-                    {/* View Details Button */}
-                    <Link
-                      to={`/artifact/${artifact._id}`}
-                      className="flex items-center mt-6 text-blue-600 hover:text-blue-700 text-sm font-medium"
-                    >
-                      View Details <FaArrowRight className="ml-2" />
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer>
-        <Footer className="bottom-0 left-0 w-full z-50 bg-base-200" />
-      </footer>
-    </div>
+      <footer className='mt-8'>
+          <Footer className="bottom-0  left-0 w-full z-50 bg-base-200" />
+      </footer>    
+      </div>
   );
 };
 
-export default LikedArtifact;
+export default LikedArtifacts;

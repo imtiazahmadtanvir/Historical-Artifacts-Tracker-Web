@@ -52,12 +52,29 @@ const ArtifactDetails = () => {
 
 
 
-      setArtifact((prevArtifact) => ({
-        ...prevArtifact,
-        likes: newLikes,
-      }));
-      setLiked(!liked); // Toggle the liked state
+      if (response.ok) {
+        // Update the artifact's state
+        setArtifact((prevArtifact) => ({
+          ...prevArtifact,
+          likes: newLikes,
+        })); // Toggle the liked state
 
+
+
+
+        setLiked(!liked); // Toggle the liked state
+        // Optionally store in localStorage or sessionStorage
+        const likedArtifacts = JSON.parse(localStorage.getItem('likedArtifacts') || '[]');
+        if (liked) {
+          // Remove from liked artifacts if disliked
+          const updatedLikedArtifacts = likedArtifacts.filter(item => item._id !== artifact._id);
+          localStorage.setItem('likedArtifacts', JSON.stringify(updatedLikedArtifacts));
+        } else {
+          // Add to liked artifacts if liked
+          likedArtifacts.push(artifact);
+          localStorage.setItem('likedArtifacts', JSON.stringify(likedArtifacts));
+        }
+      }
       // Reload the page by navigating to the same page
       navigate(0); // This will refresh the page
     } catch (err) {
@@ -82,32 +99,32 @@ const ArtifactDetails = () => {
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
 
-      <div className="container mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
-        <h2 className="text-3xl font-bold mb-4">{artifact.artifactName}</h2>
+      <div className="container mx-auto text-gray-700 p-6 bg-white shadow-md rounded-lg lg:w-5/12  w-10/12 mb-10 mt-10">
+        <h2 className="text-3xl  text-center font-bold mb-4">{artifact.artifactName}</h2>
         <img
           src={artifact.artifactImage || default_Img}
           alt={artifact.artifactName}
           className="w-full h-64 object-cover rounded-lg mb-4"
         />
-        <p><strong>Type:</strong> {artifact.artifactType}</p>
-        <p><strong>Historical Context:</strong> {artifact.historicalContext}</p>
-        <p><strong>Created At:</strong> {artifact.createdAt}</p>
-        <p><strong>Discovered At:</strong> {artifact.discoveredAt}</p>
-        <p><strong>Discovered By:</strong> {artifact.discoveredBy}</p>
-        <p><strong>Present Location:</strong> {artifact.presentLocation}</p>
+        <p><strong>Type: </strong> {artifact.artifactType}</p>
+        <p><strong>Historical Context: </strong> {artifact.historicalContext}</p>
+        <p><strong>Created At: </strong> {artifact.createdAt}</p>
+        <p><strong>Discovered At: </strong> {artifact.discoveredAt}</p>
+        <p><strong>Discovered By: </strong> {artifact.discoveredBy}</p>
+        <p><strong>Present Location: </strong> {artifact.presentLocation}</p>
 
-        {/* ✅ Like Button */}
-        <div className="flex items-center gap-3 mt-4">
+        {/*Like Button */}
+        <div className="flex items-center gap-3  mt-4">
           <button
             onClick={handleLike}
             disabled={isLiking}
             className={`px-4 py-2 rounded-md text-white ${
-              isLiking ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
+              isLiking ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-500 hover:bg-blue-600'
             }`}
           >
             {isLiking ? 'Liking...' : (
               <div className="flex items-center gap-2">
-                <FaHeart className={`text-${liked ? 'red' : 'gray'}-500`} />
+                <FaHeart className={`text-${liked ? 'red' : 'white'}-500`} />
                 {liked ? 'Dislike' : 'Like'}
               </div>
             )}
@@ -116,7 +133,9 @@ const ArtifactDetails = () => {
         </div>
       </div>
 
-      <Footer />
+      <footer className='mt-8'>
+                <Footer className="bottom-0 left-0 w-full z-50 bg-base-200" />
+      </footer>
     </div>
   );
 };
