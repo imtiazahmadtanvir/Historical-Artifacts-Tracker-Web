@@ -1,20 +1,23 @@
+
 import { useState, useEffect, useContext } from 'react';
 // import { Link } from 'react-router-dom';
-import {FaHeart, FaCalendarAlt } from 'react-icons/fa';
+import { FaHeart, FaCalendarAlt } from 'react-icons/fa';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import default_Img from '../assets/bg4.jpg';
 import { AuthContext } from '../provider/AuthProvider';
+import Swal from "sweetalert2";
+import { useNavigate } from 'react-router-dom';
 
 const MyArtifact = () => {
   const [artifacts, setArtifacts] = useState([]); // To store fetched artifacts
   const { user } = useContext(AuthContext); // Get logged-in user data
+  const navigate = useNavigate(); // Initialize navigate
 
   console.log('Logged in user email:', user?.email);
 
   useEffect(() => {
     if (user) {
-      // Fetch artifacts data when user is logged in
       const fetchArtifacts = async () => {
         try {
           const response = await fetch('http://localhost:5000/artifacts');
@@ -22,19 +25,9 @@ const MyArtifact = () => {
             throw new Error('Failed to fetch artifacts');
           }
           const data = await response.json();
-          console.log('Fetched artifacts:', data); // Log the fetched data for debugging
-
-          // Filter artifacts based on the logged-in user's email
           const userArtifacts = data.filter((artifact) => {
-            // Check if the artifact has the adderEmail field and it matches user.email
-            if (artifact.adderEmail) {
-              console.log('Comparing', artifact.adderEmail, 'with', user.email); // Log comparison
-              return artifact.adderEmail.toLowerCase() === user.email.toLowerCase();
-            }
-            return false;
+            return artifact.adderEmail?.toLowerCase() === user.email?.toLowerCase();
           });
-
-          console.log('Filtered artifacts:', userArtifacts); // Log the filtered artifacts
           setArtifacts(userArtifacts);
         } catch (error) {
           console.error('Error fetching artifacts:', error);
@@ -43,7 +36,36 @@ const MyArtifact = () => {
 
       fetchArtifacts();
     }
-  }, [user]); // This will run when the user state changes
+  }, [user]);
+
+  const HandleDelete = (_id) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:5000/artifacts/${_id}`, {
+          method: 'DELETE',
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              setArtifacts((prevArtifacts) => prevArtifacts.filter((artifact) => artifact._id !== _id));
+              Swal.fire('Deleted!', 'Your artifact has been deleted.', 'success');
+            }
+          })
+          .catch((error) => {
+            console.error('Error deleting artifact:', error);
+            Swal.fire('Error!', 'Something went wrong. Please try again.', 'error');
+          });
+      }
+    });
+  };
 
   if (!user) {
     return <div className="text-center py-10 text-red-500">Please log in to view your artifacts.</div>;
@@ -81,8 +103,6 @@ const MyArtifact = () => {
                     <p className="text-gray-600 w-10/12 mx-auto text-sm mt-2 mb-4 truncate">
                       {artifact.historicalContext || 'No description available.'}
                     </p>
-
-                    {/* Add More Information Here */}
                     <p className="text-left text-gray-600 text-sm mb-2">
                       <strong>Category:</strong> {artifact.category || 'Unknown'}
                     </p>
@@ -107,10 +127,19 @@ const MyArtifact = () => {
                       </div>
                     </div>
 
-
-                    <div className="flex justify-between mt-4">
-                      <button className="text-sm text-yellow-500 hover:text-yellow-600">Update</button>
-                      <button className="text-sm text-red-500 hover:text-red-600">Delete</button>
+                    <div className="flex gap-3 mt-6">
+                      <button
+                        onClick={() => navigate(`/update-artifact/${artifact._id}`)}
+                        className="btn btn-primary flex-grow"
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={() => HandleDelete(artifact._id)}
+                        className="btn btn-error flex-grow"
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
                 </div>
