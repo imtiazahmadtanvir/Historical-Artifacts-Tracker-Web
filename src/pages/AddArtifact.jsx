@@ -116,10 +116,10 @@ const AddArtifact = () => {
         <Navbar />
       </header>
       <main className="flex-grow container mx-auto px-4 py-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">Add Artifact</h2>
+        <h2 className="text-3xl text-center font-bold text-gray-800 mb-6">Add Artifact</h2>
         <form
           onSubmit={handleSubmit}
-          className="bg-white p-6 rounded-lg shadow-md space-y-4"
+          className="bg-white p-6 rounded-lg shadow-md lg:w-8/12 mx-auto space-y-4"
         >
           {/* Artifact Name */}
           <div className="form-control">

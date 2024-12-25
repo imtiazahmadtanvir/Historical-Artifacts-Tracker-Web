@@ -1,11 +1,13 @@
-import { Link, useLoaderData } from 'react-router-dom';
+import {useLoaderData } from 'react-router-dom';
 import { FaArrowRight, FaHeart, FaCalendarAlt } from 'react-icons/fa';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import default_Img from '../assets/bg4.jpg';
+import { useNavigate } from 'react-router-dom';
 
 const AllArtifactsPage = () => {
   const artifacts = useLoaderData();
+  const navigate = useNavigate(); // Initialize navigate
 
   // console.log('Artifacts Data:', artifacts); 
 
@@ -51,12 +53,14 @@ const AllArtifactsPage = () => {
                         <span>{artifact.discoveredAt || 'Unknown'}</span>
                       </div>
                     </div>
-                    <Link
-                      to={`/artifact/${artifact._id}`}
+                    <button
+                  onClick={() => navigate(`/artifact/${artifact._id}`)}
                       className="flex items-center mt-6 text-blue-600 hover:text-blue-700 text-sm font-medium"
                     >
                       View Details <FaArrowRight className="ml-2" />
-                    </Link>
+                    </button>
+
+
                   </div>
                 </div>
               ))}

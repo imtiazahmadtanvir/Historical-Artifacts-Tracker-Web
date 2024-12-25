@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { FaHeart, FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa';
+import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { FaHeart } from 'react-icons/fa';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import default_Img from '../assets/bg4.jpg';
@@ -8,10 +8,12 @@ import default_Img from '../assets/bg4.jpg';
 const ArtifactDetails = () => {
   const { id } = useParams(); // Extract artifact ID from URL params
   const [artifact, setArtifact] = useState(null); // State to store artifact details
-  const [isLiking, setIsLiking] = useState(false); // Prevent multiple like requests
-  const [error, setError] = useState(null); // State for handling errors
+  const [error, setError] = useState(null); // State to store errors
+  const [isLiking, setIsLiking] = useState(false); // State for like button loading
+  const [liked, setLiked] = useState(false); // Track if the artifact is liked or not
+  const navigate = useNavigate(); // Initialize navigate
 
-  // ✅ Fetch Artifact Details by ID
+  // Fetch Artifact Details
   useEffect(() => {
     const fetchArtifact = async () => {
       try {
@@ -21,102 +23,100 @@ const ArtifactDetails = () => {
         }
         const data = await response.json();
         setArtifact(data);
+        setLiked(data.likes > 0); // Set initial liked state based on fetched data
       } catch (err) {
-        console.error('Error fetching artifact:', err);
-        setError('Failed to fetch artifact details');
+        setError(err.message);
       }
     };
 
     fetchArtifact();
   }, [id]);
 
-  // ✅ Handle Like Button Click
-  const handleLike = async () => {
-    if (isLiking) return; // Prevent spam clicking
+  // Handle Like Button Click
+  const handleLike = async (event) => {
+    event.preventDefault(); // Prevent the form from submitting and reloading the page
+
+    if (!artifact) return;
     setIsLiking(true);
 
     try {
-      const response = await fetch(`http://localhost:5000/artifacts/${id}/like`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ liked: true }),
+      const newLikes = liked ? (artifact.likes || 0) - 1 : (artifact.likes || 0) + 1;
+
+      const response = await fetch(`http://localhost:5000/artifacts/${id}/likes`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ likes: newLikes }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to like the artifact');
-      }
 
-      // Update artifact state to reflect like action
-      setArtifact((prev) => ({
-        ...prev,
-        liked: true,
+
+      setArtifact((prevArtifact) => ({
+        ...prevArtifact,
+        likes: newLikes,
       }));
+      setLiked(!liked); // Toggle the liked state
+
+      // Reload the page by navigating to the same page
+      navigate(0); // This will refresh the page
     } catch (err) {
-      console.error('Error liking artifact:', err);
-      setError('Failed to like the artifact');
+      setError(err.message);
     } finally {
       setIsLiking(false);
     }
   };
 
-  if (error) return <div className="text-center py-10 text-red-500">{error}</div>;
-  if (!artifact) return <div className="text-center py-10">Loading...</div>;
+  // Error State
+  if (error) {
+    return <div className="text-center py-10 text-red-500">{error}</div>;
+  }
 
+  // Loading State
+  if (!artifact) {
+    return <div className="text-center py-10">Loading...</div>;
+  }
+
+  // Render Artifact Details
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* ✅ Navbar */}
-      <header>
-        <Navbar />
-      </header>
+      <Navbar />
 
-      {/* ✅ Artifact Details Section */}
-      <section className="container mx-auto px-4 py-12">
-        <div className="bg-white shadow-lg rounded-lg overflow-hidden p-8 max-w-4xl mx-auto">
-          {/* ✅ Artifact Image */}
-          <img
-            src={artifact.artifactImage || default_Img}
-            alt={artifact.artifactName || 'Artifact Image'}
-            className="w-full h-64 object-cover rounded-md mb-6"
-          />
+      <div className="container mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
+        <h2 className="text-3xl font-bold mb-4">{artifact.artifactName}</h2>
+        <img
+          src={artifact.artifactImage || default_Img}
+          alt={artifact.artifactName}
+          className="w-full h-64 object-cover rounded-lg mb-4"
+        />
+        <p><strong>Type:</strong> {artifact.artifactType}</p>
+        <p><strong>Historical Context:</strong> {artifact.historicalContext}</p>
+        <p><strong>Created At:</strong> {artifact.createdAt}</p>
+        <p><strong>Discovered At:</strong> {artifact.discoveredAt}</p>
+        <p><strong>Discovered By:</strong> {artifact.discoveredBy}</p>
+        <p><strong>Present Location:</strong> {artifact.presentLocation}</p>
 
-          {/* ✅ Artifact Information */}
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            {artifact.artifactName}
-          </h1>
-          <p className="text-gray-600 mb-4">
-            {artifact.historicalContext || 'No historical context available.'}
-          </p>
-          <div className="flex items-center space-x-4 text-gray-600 mb-4">
-            <div className="flex items-center">
-              <FaCalendarAlt className="mr-2" />
-              <span>{artifact.discoveredAt || 'Unknown Date'}</span>
-            </div>
-            <div className="flex items-center">
-              <FaMapMarkerAlt className="mr-2" />
-              <span>{artifact.origin || 'Unknown Origin'}</span>
-            </div>
-          </div>
-
-          {/* ✅ Like Button */}
-          <div className="flex items-center space-x-4 mt-6">
-            <button
-              onClick={handleLike}
-              className={`flex items-center px-4 py-2 rounded-md text-white ${
-                isLiking || artifact.liked ? 'bg-gray-400' : 'bg-red-500 hover:bg-red-600'
-              }`}
-              disabled={isLiking || artifact.liked}
-            >
-              <FaHeart className="mr-2" /> 
-              {artifact.liked ? 'Liked' : 'Like'}
-            </button>
-          </div>
+        {/* ✅ Like Button */}
+        <div className="flex items-center gap-3 mt-4">
+          <button
+            onClick={handleLike}
+            disabled={isLiking}
+            className={`px-4 py-2 rounded-md text-white ${
+              isLiking ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
+            }`}
+          >
+            {isLiking ? 'Liking...' : (
+              <div className="flex items-center gap-2">
+                <FaHeart className={`text-${liked ? 'red' : 'gray'}-500`} />
+                {liked ? 'Dislike' : 'Like'}
+              </div>
+            )}
+          </button>
+          <span className="text-lg font-medium">Likes: {artifact.likes || 0}</span>
         </div>
-      </section>
+      </div>
 
-      {/* ✅ Footer */}
-      <footer>
-        <Footer className="bottom-0 left-0 w-full z-50 bg-base-200" />
-      </footer>
+      <Footer />
     </div>
   );
 };
