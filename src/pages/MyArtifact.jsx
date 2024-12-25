@@ -1,6 +1,4 @@
-
 import { useState, useEffect, useContext } from 'react';
-// import { Link } from 'react-router-dom';
 import { FaHeart, FaCalendarAlt } from 'react-icons/fa';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -13,6 +11,7 @@ const MyArtifact = () => {
   const [artifacts, setArtifacts] = useState([]); // To store fetched artifacts
   const { user } = useContext(AuthContext); // Get logged-in user data
   const navigate = useNavigate(); // Initialize navigate
+  const [loading, setLoading] = useState(false); // Loading state to show progress
 
   console.log('Logged in user email:', user?.email);
 
@@ -49,6 +48,7 @@ const MyArtifact = () => {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
+        setLoading(true); // Show loading indicator
         fetch(`http://localhost:5000/artifacts/${_id}`, {
           method: 'DELETE',
         })
@@ -57,11 +57,14 @@ const MyArtifact = () => {
             if (data.success) {
               setArtifacts((prevArtifacts) => prevArtifacts.filter((artifact) => artifact._id !== _id));
               Swal.fire('Deleted!', 'Your artifact has been deleted.', 'success');
+              navigate(0); // Use navigate(0) to reload the page
             }
+            setLoading(false); // Hide loading indicator after operation
           })
           .catch((error) => {
             console.error('Error deleting artifact:', error);
             Swal.fire('Error!', 'Something went wrong. Please try again.', 'error');
+            setLoading(false); // Hide loading indicator on error
           });
       }
     });
@@ -137,8 +140,9 @@ const MyArtifact = () => {
                       <button
                         onClick={() => HandleDelete(artifact._id)}
                         className="btn btn-error flex-grow"
+                        disabled={loading} // Disable button while loading
                       >
-                        Delete
+                        {loading ? 'Deleting...' : 'Delete'}
                       </button>
                     </div>
                   </div>

@@ -38,7 +38,7 @@ const LikedArtifacts = () => {
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
 
-      <div className="container  mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
+      <div className="container mx-auto p-6 bg-white shadow-md rounded-lg mt-10">
         <h2 className="text-3xl font-bold mb-6 text-center">Liked Artifacts</h2>
 
         {likedArtifacts.length === 0 ? (
@@ -82,10 +82,8 @@ const LikedArtifacts = () => {
         )}
       </div>
 
-      <footer className='mt-8'>
-          <Footer className="bottom-0  left-0 w-full z-50 bg-base-200" />
-      </footer>    
-      </div>
+      <Footer />
+    </div>
   );
 };
 

@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { FaHeart } from 'react-icons/fa';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import default_Img from '../assets/bg4.jpg';
+import { AuthContext } from '../provider/AuthProvider';
 
 const ArtifactDetails = () => {
   const { id } = useParams(); // Extract artifact ID from URL params
@@ -12,7 +13,9 @@ const ArtifactDetails = () => {
   const [isLiking, setIsLiking] = useState(false); // State for like button loading
   const [liked, setLiked] = useState(false); // Track if the artifact is liked or not
   const navigate = useNavigate(); // Initialize navigate
-
+  const { user } = useContext(AuthContext); // Get logged-in user data
+  
+  console.log(user.email)
   // Fetch Artifact Details
   useEffect(() => {
     const fetchArtifact = async () => {
@@ -53,7 +56,13 @@ const ArtifactDetails = () => {
 
 
       if (response.ok) {
-        // Update the artifact's state
+        
+        const updatedArtifactResponse = await fetch(`http://localhost:5000/artifacts/${id}`);
+        if (updatedArtifactResponse.ok) {
+          const updatedArtifact = await updatedArtifactResponse.json();
+          setArtifact(updatedArtifact);
+        }
+
         setArtifact((prevArtifact) => ({
           ...prevArtifact,
           likes: newLikes,
@@ -69,6 +78,17 @@ const ArtifactDetails = () => {
           // Remove from liked artifacts if disliked
           const updatedLikedArtifacts = likedArtifacts.filter(item => item._id !== artifact._id);
           localStorage.setItem('likedArtifacts', JSON.stringify(updatedLikedArtifacts));
+
+          const response = await fetch(`http://localhost:5000/artifacts/${id}/likes`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              likes: newLikes,
+              userEmail: user.email,
+              liked: !liked,
+            }),
+          });
+
         } else {
           // Add to liked artifacts if liked
           likedArtifacts.push(artifact);
