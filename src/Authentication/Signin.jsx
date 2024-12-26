@@ -2,6 +2,7 @@
 import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
+import axios from "axios";
 
 const Signin = () => {
   const { userLogin } = useContext(AuthContext);
@@ -16,7 +17,14 @@ const Signin = () => {
     const password = form.password.value;
 
     userLogin(email, password)
-      .then(() => {
+      .then((result) => {
+          console.log('sign in' ,result.user.email);
+
+          const  user ={ email: email }
+          axios.post('http://localhost:5000/jwt', user ,{ withCredentials : true})
+          .then(res=>{
+            console.log(res.data)
+          })
         // Redirect to previous route or home
         navigate(location?.state?.from || "/");
       })

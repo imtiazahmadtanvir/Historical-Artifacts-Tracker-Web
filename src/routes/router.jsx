@@ -49,7 +49,7 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <LikedArtifact />
-      </PrivateRoute>
+      </PrivateRoute>  
     ),
     loader:()=>fetch(`http://localhost:5000/artifacts`),
     errorElement: <Errorpage />,
