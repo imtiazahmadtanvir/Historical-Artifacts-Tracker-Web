@@ -15,7 +15,7 @@ const ArtifactDetails = () => {
   const navigate = useNavigate(); // Initialize navigate
   const { user } = useContext(AuthContext); // Get logged-in user data
   
-  console.log(user.email)
+  // console.log(user.email)
   // Fetch Artifact Details
   useEffect(() => {
     const fetchArtifact = async () => {

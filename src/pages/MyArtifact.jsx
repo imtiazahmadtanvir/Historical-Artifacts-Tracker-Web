@@ -13,7 +13,7 @@ const MyArtifact = () => {
   const navigate = useNavigate(); // Initialize navigate
   const [loading, setLoading] = useState(false); // Loading state to show progress
 
-  console.log('Logged in user email:', user?.email);
+  // console.log('Logged in user email:', user?.email);
 
   useEffect(() => {
     if (user) {

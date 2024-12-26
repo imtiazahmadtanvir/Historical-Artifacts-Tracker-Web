@@ -26,7 +26,7 @@ const FeaturedArtifacts = () => {
     fetchMostLikedArtifacts();
   }, []);
 
-  console.log(artifacts); // Check the artifacts state
+  // console.log(artifacts); // Check the artifacts state
 
 
   if (loading) {
