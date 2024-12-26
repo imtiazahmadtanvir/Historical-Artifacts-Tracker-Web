@@ -45,7 +45,7 @@ const UpdateArtifact = () => {
         e.preventDefault();
         try {
             const { _id, ...updatedArtifact } = artifact;  
-    
+            console.log(_id)
             const response = await fetch(`https://historical-artifacts-tracker-server-blue.vercel.app/artifacts/${id}`, {
                 method: 'PUT',
                 headers: {
