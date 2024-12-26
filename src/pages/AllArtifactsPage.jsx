@@ -17,7 +17,7 @@ const AllArtifactsPage = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/artifacts/search?query=${searchQuery}`
+        `https://historical-artifacts-tracker-server-blue.vercel.app/artifacts/search?query=${searchQuery}`
       );
       if (!response.ok) {
         throw new Error('Failed to fetch search results');

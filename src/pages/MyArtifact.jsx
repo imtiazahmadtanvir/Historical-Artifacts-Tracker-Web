@@ -49,7 +49,7 @@ const MyArtifact = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         setLoading(true); // Show loading indicator
-        fetch(`http://localhost:5000/artifacts/${_id}`, {
+        fetch(`https://historical-artifacts-tracker-server-blue.vercel.app/artifacts/${_id}`, {
           method: 'DELETE',
         })
           .then((res) => res.json())

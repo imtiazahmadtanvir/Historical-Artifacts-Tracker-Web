@@ -10,7 +10,7 @@ const FeaturedArtifacts = () => {
   useEffect(() => {
     const fetchMostLikedArtifacts = async () => {
       try {
-        const response = await fetch("http://localhost:5000/artifacts/most-liked");
+        const response = await fetch("https://historical-artifacts-tracker-server-blue.vercel.app/artifacts/most-liked");
         if (!response.ok) {
           throw new Error("Failed to fetch most liked artifacts");
         }

@@ -10,6 +10,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
+import axios from "axios";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext();
@@ -59,7 +60,23 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      setLoading(false);
+      console.log('state capture' ,currentUser?.email)
+      
+      if(currentUser?.email){
+        const user ={email: currentUser.email}
+
+        axios.post('https://historical-artifacts-tracker-server-blue.vercel.app/jwt' ,user ,{withCredentials: true})
+         .then(res => console.log( 'login token',res.data))
+        setLoading(false);
+      }else {
+        axios.post('https://historical-artifacts-tracker-server-blue.vercel.app/logout', {}, { withCredentials: true })
+            .then(res => {
+                console.log('Logout:', res.data);
+        setLoading(false);
+            })
+        }
+
+
     });
     return () => {
       unsubscribe();

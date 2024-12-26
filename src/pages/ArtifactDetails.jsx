@@ -20,7 +20,7 @@ const ArtifactDetails = () => {
   useEffect(() => {
     const fetchArtifact = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/artifacts/${id}`);
+        const response = await fetch(`https://historical-artifacts-tracker-server-blue.vercel.app/artifacts/${id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch artifact details');
         }
@@ -45,7 +45,7 @@ const ArtifactDetails = () => {
     try {
       const newLikes = liked ? (artifact.likes || 0) - 1 : (artifact.likes || 0) + 1;
 
-      const response = await fetch(`http://localhost:5000/artifacts/${id}/likes`, {
+      const response = await fetch(`https://historical-artifacts-tracker-server-blue.vercel.app/artifacts/${id}/likes`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ const ArtifactDetails = () => {
 
       if (response.ok) {
         
-        const updatedArtifactResponse = await fetch(`http://localhost:5000/artifacts/${id}`);
+        const updatedArtifactResponse = await fetch(`https://historical-artifacts-tracker-server-blue.vercel.app/artifacts/${id}`);
         if (updatedArtifactResponse.ok) {
           const updatedArtifact = await updatedArtifactResponse.json();
           setArtifact(updatedArtifact);
@@ -79,7 +79,7 @@ const ArtifactDetails = () => {
           const updatedLikedArtifacts = likedArtifacts.filter(item => item._id !== artifact._id);
           localStorage.setItem('likedArtifacts', JSON.stringify(updatedLikedArtifacts));
 
-          const response = await fetch(`http://localhost:5000/artifacts/${id}/likes`, {
+          const response = await fetch(`https://historical-artifacts-tracker-server-blue.vercel.app/artifacts/${id}/likes`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

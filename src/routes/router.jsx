@@ -23,7 +23,7 @@ const router = createBrowserRouter([
   {
     path: "/all-artifacts",
     element: <AllArtifactsPage />,
-    loader:()=>fetch(`http://localhost:5000/artifacts`),
+    loader:()=>fetch(`https://historical-artifacts-tracker-server-blue.vercel.app/artifacts`),
     errorElement: <Errorpage />,
   },
   {
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
         <LikedArtifact />
       </PrivateRoute>  
     ),
-    loader:()=>fetch(`http://localhost:5000/artifacts`),
+    loader:()=>fetch(`https://historical-artifacts-tracker-server-blue.vercel.app/artifacts`),
     errorElement: <Errorpage />,
   },
   {

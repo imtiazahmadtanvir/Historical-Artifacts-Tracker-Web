@@ -67,7 +67,7 @@ const AddArtifact = () => {
     console.log("Artifact Data:", artifactData);
   
     // Send data to the backend
-    fetch('http://localhost:5000/add-artifacts', {
+    fetch('https://historical-artifacts-tracker-server-blue.vercel.app/add-artifacts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

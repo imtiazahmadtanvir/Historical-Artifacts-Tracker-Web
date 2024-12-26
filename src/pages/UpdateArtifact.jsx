@@ -22,7 +22,7 @@ const UpdateArtifact = () => {
         // Fetch artifact data by ID
         const fetchArtifact = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/artifacts/${id}`);
+                const response = await fetch(`https://historical-artifacts-tracker-server-blue.vercel.app/artifacts/${id}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch artifact');
                 }
@@ -46,7 +46,7 @@ const UpdateArtifact = () => {
         try {
             const { _id, ...updatedArtifact } = artifact;  // Exclude _id from the update payload
     
-            const response = await fetch(`http://localhost:5000/artifacts/${id}`, {
+            const response = await fetch(`https://historical-artifacts-tracker-server-blue.vercel.app/artifacts/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
