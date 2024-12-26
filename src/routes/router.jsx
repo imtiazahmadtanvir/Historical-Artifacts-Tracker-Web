@@ -51,7 +51,7 @@ const router = createBrowserRouter([
         <LikedArtifact />
       </PrivateRoute>  
     ),
-    loader:()=>fetch(`https://historical-artifacts-tracker-server-blue.vercel.app/artifacts`),
+    loader:()=>fetch(`https://historical-artifacts-tracker-server-blue.vercel.app/likeddata`),
     errorElement: <Errorpage />,
   },
   {

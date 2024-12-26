@@ -19,7 +19,7 @@ const MyArtifact = () => {
     if (user) {
       const fetchArtifacts = async () => {
         try {
-          const response = await fetch('http://localhost:5000/artifacts');
+          const response = await fetch('https://historical-artifacts-tracker-server-blue.vercel.app/artifacts');
           if (!response.ok) {
             throw new Error('Failed to fetch artifacts');
           }
@@ -107,16 +107,16 @@ const MyArtifact = () => {
                       {artifact.historicalContext || 'No description available.'}
                     </p>
                     <p className="text-left text-gray-600 text-sm mb-2">
-                      <strong>Category:</strong> {artifact.category || 'Unknown'}
+                      <strong>Category:</strong> {artifact.artifactType || 'Unknown'}
                     </p>
                     <p className="text-left text-gray-600 text-sm mb-2">
-                      <strong>Location of Discovery:</strong> {artifact.location || 'Not Available'}
+                      <strong>Location of Discovery:</strong> {artifact.presentLocation || 'Not Available'}
                     </p>
                     <p className="text-left text-gray-600 text-sm mb-2">
                       <strong>Discovered By:</strong> {artifact.discoveredBy || 'Unknown'}
                     </p>
                     <p className="text-left text-gray-600 text-sm mb-4">
-                      <strong>Date Added:</strong> {new Date(artifact.dateAdded).toLocaleDateString() || 'Unknown'}
+                      <strong>Date Added:</strong> {new Date(artifact.discoveredAt).toLocaleDateString() || 'Unknown'}
                     </p>
 
                     <div className="flex justify-between items-center text-sm text-gray-600">

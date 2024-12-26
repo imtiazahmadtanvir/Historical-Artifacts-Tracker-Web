@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams } from 'react-router-dom'; // Import useNavigate
 import { FaHeart } from 'react-icons/fa';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -12,9 +12,9 @@ const ArtifactDetails = () => {
   const [error, setError] = useState(null); // State to store errors
   const [isLiking, setIsLiking] = useState(false); // State for like button loading
   const [liked, setLiked] = useState(false); // Track if the artifact is liked or not
-  const navigate = useNavigate(); // Initialize navigate
+  // const navigate = useNavigate(); // Initialize navigate
   const { user } = useContext(AuthContext); // Get logged-in user data
-  
+
   // console.log(user.email)
   // Fetch Artifact Details
   useEffect(() => {
@@ -56,7 +56,7 @@ const ArtifactDetails = () => {
 
 
       if (response.ok) {
-        
+
         const updatedArtifactResponse = await fetch(`https://historical-artifacts-tracker-server-blue.vercel.app/artifacts/${id}`);
         if (updatedArtifactResponse.ok) {
           const updatedArtifact = await updatedArtifactResponse.json();
@@ -68,35 +68,59 @@ const ArtifactDetails = () => {
           likes: newLikes,
         })); // Toggle the liked state
 
-
-
-
         setLiked(!liked); // Toggle the liked state
         // Optionally store in localStorage or sessionStorage
-        const likedArtifacts = JSON.parse(localStorage.getItem('likedArtifacts') || '[]');
-        if (liked) {
-          // Remove from liked artifacts if disliked
-          const updatedLikedArtifacts = likedArtifacts.filter(item => item._id !== artifact._id);
-          localStorage.setItem('likedArtifacts', JSON.stringify(updatedLikedArtifacts));
+        // const likedArtifacts = JSON.parse(localStorage.getItem('likedArtifacts') || '[]');
+       
+        const LikedData = {
+          artifactName: artifact.artifactName,
+          artifactImage: artifact.artifactImage,
+          artifactType: artifact.artifactType,
+          historicalContext: artifact.historicalContext,
+          createdAt: artifact.createdAt,
+          discoveredAt: artifact.discoveredAt,
+          discoveredBy: artifact.discoveredBy,
+          presentLocation: artifact.presentLocation,
+          adderName: user?.displayName || "Unknown User",
+          adderEmail: user?.email || "Unknown Email",
+          userEmail: user.email,
+          artifactId: artifact._id,
+          likes: newLikes,
+        };
 
-          const response = await fetch(`https://historical-artifacts-tracker-server-blue.vercel.app/artifacts/${id}/likes`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              likes: newLikes,
-              userEmail: user.email,
-              liked: !liked,
-            }),
+
+
+        if (!liked) {    // Constructing the LikedData object using artifact properties
+
+
+          console.log("Liked Data:", LikedData); // Log the liked data to check
+
+          // Save liked artifact data to the backend
+          await fetch("https://historical-artifacts-tracker-server-blue.vercel.app/add-liked-data", {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(LikedData),
           });
 
         } else {
-          // Add to liked artifacts if liked
-          likedArtifacts.push(artifact);
-          localStorage.setItem('likedArtifacts', JSON.stringify(likedArtifacts));
+
+       await fetch(
+        `https://historical-artifacts-tracker-server-blue.vercel.app/remove-liked-data/${artifact._id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userEmail: user?.email }),
         }
-      }
+      );
+    }
+  
+ }
       // Reload the page by navigating to the same page
-      navigate(0); // This will refresh the page
+      // navigate(0); // This will refresh the page
     } catch (err) {
       setError(err.message);
     } finally {
@@ -138,9 +162,8 @@ const ArtifactDetails = () => {
           <button
             onClick={handleLike}
             disabled={isLiking}
-            className={`px-4 py-2 rounded-md text-white ${
-              isLiking ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-500 hover:bg-blue-600'
-            }`}
+            className={`px-4 py-2 rounded-md text-white ${isLiking ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-500 hover:bg-blue-600'
+              }`}
           >
             {isLiking ? 'Liking...' : (
               <div className="flex items-center gap-2">
@@ -154,7 +177,7 @@ const ArtifactDetails = () => {
       </div>
 
       <footer className='mt-8'>
-                <Footer className="bottom-0 left-0 w-full z-50 bg-base-200" />
+        <Footer className="bottom-0 left-0 w-full z-50 bg-base-200" />
       </footer>
     </div>
   );
