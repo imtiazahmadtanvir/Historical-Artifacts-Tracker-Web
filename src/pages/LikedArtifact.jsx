@@ -13,11 +13,6 @@ const LikedArtifact = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext); // Get logged-in user data
 
-
-
-
-
-
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* Header with Navbar */}

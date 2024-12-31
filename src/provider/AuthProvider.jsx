@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import app from "../firebase/firebase.config";
+import axios from "axios";
+
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -10,7 +12,6 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
-import axios from "axios";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext();
@@ -67,14 +68,15 @@ const AuthProvider = ({ children }) => {
 
         axios.post('https://historical-artifacts-tracker-server-blue.vercel.app/jwt' ,user ,{withCredentials: true})
          .then(res => console.log( 'login token',res.data))
-        setLoading(false);
+          //  setLoading(false);
       }else {
         axios.post('https://historical-artifacts-tracker-server-blue.vercel.app/logout', {}, { withCredentials: true })
             .then(res => {
                 console.log('Logout:', res.data);
-        setLoading(false);
+                // setLoading(false);
             })
         }
+        setLoading(false);
 
 
     });

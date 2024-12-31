@@ -68,8 +68,8 @@ const MyArtifact = () => {
           });
       }
     });
+    
   };
-
   if (!user) {
     return <div className="text-center py-10 text-red-500">Please log in to view your artifacts.</div>;
   }
