@@ -20,7 +20,9 @@ const Profile = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Navbar */}
-      <Navbar />
+      <header className="mt-16">
+        <Navbar />
+      </header>
 
       {/* Main Content */}
       <div className="flex-grow pb-16">

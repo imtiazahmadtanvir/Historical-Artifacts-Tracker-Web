@@ -141,8 +141,9 @@ const ArtifactDetails = () => {
   // Render Artifact Details
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <Navbar />
-
+      <header className="mt-16">
+        <Navbar />
+      </header>
       <div className="container mx-auto text-gray-700 p-6 bg-white shadow-md rounded-lg lg:w-5/12  w-10/12 mb-10 mt-10">
         <h2 className="text-3xl  text-center font-bold mb-4">{artifact.artifactName}</h2>
         <img

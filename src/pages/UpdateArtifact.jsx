@@ -69,8 +69,10 @@ const UpdateArtifact = () => {
     return (
         <div className=" bg-white ">
             <nav>
-                <Navbar></Navbar>
-                <h2 className="text-3xl py-4 text-gray-700 text-center font-bold">Update Artifact</h2>
+            <header className="mt-16">
+                    <Navbar />
+                 </header>                
+      <h2 className="text-3xl py-4 text-gray-700 text-center font-bold">Update Artifact</h2>
             </nav>
 
             <main className="flex w-10/12  shadow-lg bg-gray-900 rounded-lg mb-6  lg:w-6/12 flex-grow container mx-auto px-4 py-8">

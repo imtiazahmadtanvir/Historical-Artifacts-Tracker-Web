@@ -16,7 +16,7 @@ const LikedArtifact = () => {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* Header with Navbar */}
-      <header>
+      <header className="mt-16">
         <Navbar />
       </header>
 

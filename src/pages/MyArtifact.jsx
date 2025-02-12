@@ -76,7 +76,7 @@ const MyArtifact = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <header>
+      <header className="mt-16">
         <Navbar />
       </header>
 

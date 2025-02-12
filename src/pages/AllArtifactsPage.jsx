@@ -33,7 +33,7 @@ const AllArtifactsPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <header>
+      <header className="mt-14">
         <Navbar />
       </header>
 
