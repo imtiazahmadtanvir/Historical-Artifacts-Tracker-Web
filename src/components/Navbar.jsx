@@ -25,7 +25,7 @@ const Navbar = () => {
   }, [darkMode]);
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-lg z-50 transition-colors duration-300">
+    <nav className={`fixed top-0 left-0 w-full ${darkMode ? "bg-gray-900" : "bg-white"} text-gray-900 dark:text-gray-100 shadow-lg z-50 transition-colors duration-300`}>
       <div className="container mx-auto py-3 flex justify-between items-center">
         {/* Logo and Title */}
         <div className="flex items-center ml-3">
@@ -110,7 +110,7 @@ const Navbar = () => {
 
       {/* Mobile Dropdown Menu */}
       {isMenuOpen && (
-        <div className="absolute top-[4.5rem] right-0 w-40 bg-white dark:bg-gray-900 shadow-lg z-50 lg:hidden">
+        <div className={`absolute top-[4.5rem] right-0 w-40 ${darkMode ? "bg-gray-900" : "bg-white"} shadow-lg z-50 lg:hidden`}>
           <div className="flex flex-col items-start gap-2 p-4">
             <Link to="/" className="btn btn-ghost w-full text-left hover:bg-gray-300 dark:hover:bg-gray-700">
               Home
@@ -165,3 +165,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+cl
