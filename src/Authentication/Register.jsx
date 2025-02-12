@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 import { useContext, useState } from "react";
@@ -78,70 +79,78 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 p-6">
-      <div className="w-full max-w-md bg-white/20 backdrop-blur-md p-8 rounded-xl shadow-xl">
-        <h2 className="text-3xl font-semibold text-center text-white mb-6">Create an Account</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-white">Name</label>
-            <input
-              name="name"
-              type="text"
-              placeholder="Enter your full name"
-              className="w-full p-3 rounded-lg border-none focus:ring-2 focus:ring-pink-400"
-              required
-            />
-            {error.name && <p className="text-red-300 text-sm mt-1">{error.name}</p>}
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+      <div className="max-w-md w-full bg-white/10 backdrop-blur-lg rounded-lg shadow-lg p-8 border border-white/20">
+        <h2 className="text-3xl font-semibold text-center text-white mb-6">Create Your Account</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-white">Name</label>
+              <input
+                name="name"
+                type="text"
+                placeholder="Enter your full name"
+                className="w-full px-4 py-2 bg-black text-white border border-white/20 rounded-md focus:ring focus:ring-gray-500 focus:border-gray-300"
+                required
+              />
+              {error.name && <p className="text-red-400 text-xs mt-1">{error.name}</p>}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-white">Photo URL</label>
+              <input
+                name="photo"
+                type="text"
+                placeholder="Enter photo URL"
+                className="w-full px-4 py-2 bg-black text-white border border-white/20 rounded-md focus:ring focus:ring-gray-500 focus:border-gray-300"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-white">Email</label>
+              <input
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                className="w-full px-4 py-2 bg-black text-white border border-white/20 rounded-md focus:ring focus:ring-gray-500 focus:border-gray-300"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-white">Password</label>
+              <input
+                name="password"
+                type="password"
+                placeholder="Create a password"
+                className="w-full px-4 py-2 bg-black text-white border border-white/20 rounded-md focus:ring focus:ring-gray-500 focus:border-gray-300"
+                required
+              />
+              {error.password && <p className="text-red-400 text-xs mt-1">{error.password}</p>}
+            </div>
           </div>
-          <div>
-            <label className="block text-white">Photo URL</label>
-            <input
-              name="photo"
-              type="text"
-              placeholder="Enter photo URL"
-              className="w-full p-3 rounded-lg border-none focus:ring-2 focus:ring-pink-400"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-white">Email</label>
-            <input
-              name="email"
-              type="email"
-              placeholder="Enter your email"
-              className="w-full p-3 rounded-lg border-none focus:ring-2 focus:ring-pink-400"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-white">Password</label>
-            <input
-              name="password"
-              type="password"
-              placeholder="Create a password"
-              className="w-full p-3 rounded-lg border-none focus:ring-2 focus:ring-pink-400"
-              required
-            />
-            {error.password && <p className="text-red-300 text-sm mt-1">{error.password}</p>}
-          </div>
-          {error.register && <p className="text-red-300 text-sm mt-4">{error.register}</p>}
-          <button type="submit" className="w-full py-3 text-white bg-pink-600 hover:bg-pink-700 rounded-lg">
+          {error.register && <p className="text-red-400 text-sm mt-4">{error.register}</p>}
+          <button
+            type="submit"
+            className="w-full bg-white text-black font-medium py-2 px-4 rounded-md hover:bg-gray-300 focus:outline-none focus:ring focus:ring-gray-500 mt-6"
+          >
             Register
           </button>
         </form>
         <div className="flex flex-col text-center items-center gap-2 justify-center mt-6">
           <button
             onClick={handleGoogleSignUP}
-            className="flex gap-2 mx-auto text-center items-center w-full bg-white text-gray-800 border border-gray-300 rounded-lg py-2 px-4 hover:bg-gray-100"
+            className="flex gap-2 items-center w-full bg-gray-900 text-white border border-white/20 rounded-md py-2 px-4 hover:bg-gray-700"
           >
             <FaGoogle className="text-lg" /> Sign up with Google
           </button>
-          <button className="flex gap-2 items-center w-full bg-white text-gray-800 border border-gray-300 rounded-lg py-2 px-4 hover:bg-gray-100">
+          <button className="flex gap-2 items-center w-full bg-gray-900 text-white border border-white/20 rounded-md py-2 px-4 hover:bg-gray-700">
             <FaGithub className="text-lg" /> Sign up with Github
           </button>
         </div>
-        <p className="text-center text-white mt-6">
-          Already have an account? <Link to="/auth/login" className="underline">Login</Link>
+        <p className="text-center text-sm text-gray-400 mt-6">
+          Already have an account? {" "}
+          <Link to="/auth/login" className="text-red-800 hover:underline">
+            Login
+          </Link>
         </p>
       </div>
     </div>
