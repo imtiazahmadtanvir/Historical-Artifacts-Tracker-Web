@@ -9,10 +9,11 @@ import YourRoleInPreservingHistory from "../components/YourRoleInPreservingHisto
 const HomeLayout = () => {
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <header>
+      <header className="mt-14">
         <Navbar />
-        <Banner></Banner>
       </header>
+      <Banner></Banner>
+
       <FeaturedArtifacts></FeaturedArtifacts>
        <WhyPreservingHistory></WhyPreservingHistory>
        <YourRoleInPreservingHistory></YourRoleInPreservingHistory>

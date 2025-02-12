@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import bg1 from "../assets/bg3.jpeg";
+import bg1 from "../assets/bg3.png";
 import bg2 from "../assets/bg2.jpg";
 import bg3 from "../assets/bg4.jpg";
 import { Swiper, SwiperSlide } from "swiper/react";
