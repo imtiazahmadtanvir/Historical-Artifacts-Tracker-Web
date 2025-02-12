@@ -1,11 +1,10 @@
-/* eslint-disable no-unused-vars */
 import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
-import axios from "axios";
+import { FaGoogle } from "react-icons/fa";
 
 const Signin = () => {
-  const { userLogin } = useContext(AuthContext);
+  const { userLogin, googleSignIn } = useContext(AuthContext);
   const [error, setError] = useState({});
   const location = useLocation();
   const navigate = useNavigate();
@@ -18,73 +17,55 @@ const Signin = () => {
 
     userLogin(email, password)
       .then((result) => {
-          console.log('sign in' ,result.user.email);
-
-          const  user ={ email: email }
-          // axios.post('https://historical-artifacts-tracker-server-blue.vercel.app/jwt', user ,{ withCredentials : true})
-          // .then(res=>{
-          //   console.log(res.data)
-          // })
-        // Redirect to previous route or home
+        console.log("Signed in as:", result.user.email);
         navigate(location?.state?.from || "/");
       })
-      .catch((err) => {
-        setError({ ...error, login: "Invalid email or password" });
+      .catch(() => {
+        setError({ login: "Invalid email or password" });
       });
   };
 
+  const handleGoogleSignIn = () => {
+    googleSignIn()
+      .then(() => navigate("/"))
+      .catch(() => setError({ login: "Google sign-in failed" }));
+  };
+
   return (
-    <div className="min-h-screen flex justify-center items-center bg-white">
-      <div className="w-10/12 mx-auto card bg-base-100 lg:w-full max-w-lg shrink-0 rounded-lg p-10">
-        <h2 className="text-3xl text-yellow-400 font-semibold text-center">
-          Login your account
-        </h2>
-        <form onSubmit={handleSubmit} className="card-body">
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Email</span>
-            </label>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 p-6">
+      <div className="w-full max-w-md bg-white/20 backdrop-blur-md p-8 rounded-xl shadow-xl">
+        <h2 className="text-3xl font-semibold text-center text-white mb-6">Sign In</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-white">Email</label>
             <input
               name="email"
               type="email"
               placeholder="Enter your email"
-              className="input input-bordered"
+              className="w-full p-3 rounded-lg border-none focus:ring-2 focus:ring-pink-400"
               required
             />
           </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text">Password</span>
-            </label>
+          <div>
+            <label className="block text-white">Password</label>
             <input
               name="password"
               type="password"
               placeholder="Enter your password"
-              className="input input-bordered"
+              className="w-full p-3 rounded-lg border-none focus:ring-2 focus:ring-pink-400"
               required
             />
-            {error.login && (
-              <label className="label text-sm text-red-600">
-                {error.login}
-              </label>
-            )}
-            <label className="label">
-              <Link to="/auth/forgot" className="label-text-alt link link-hover">
-                Forgot password?
-              </Link>
-            </label>
+            {error.login && <p className="text-red-300 text-sm mt-1">{error.login}</p>}
           </div>
-          <div className="form-control mt-6">
-            <button type="submit" className="btn btn-primary bg-yellow-400 border-none text-gray-600 rounded-lg">
-              Login
-            </button>
-          </div>
+          <button type="submit" className="w-full py-3 text-white bg-pink-600 hover:bg-pink-700 rounded-lg">
+            Login
+          </button>
+          <button type="button" onClick={handleGoogleSignIn} className="w-full flex items-center justify-center py-3 bg-white text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-100">
+            <FaGoogle className="mr-2" /> Sign in with Google
+          </button>
         </form>
-        <p className="text-center font-semibold">
-          Don’t Have An Account?{" "}
-          <Link to="/auth/register" className="text-red-500">
-            Register
-          </Link>
+        <p className="text-center text-white mt-4">
+          Don’t have an account? <Link to="/auth/register" className="underline">Register</Link>
         </p>
       </div>
     </div>
