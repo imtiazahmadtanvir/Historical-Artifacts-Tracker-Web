@@ -111,19 +111,19 @@ const AddArtifact = () => {
   
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-800">
       <header className="mt-14">
         <Navbar />
       </header>
       <main className="flex-grow container mx-auto px-4 py-8">
-        <h2 className="text-3xl text-center font-bold text-gray-800 mb-6">Add Artifact</h2>
+        <h2 className="text-3xl text-center font-bold text-gray-800 mb-6 dark:text-gray-200">Add Artifact</h2>
         <form
           onSubmit={handleSubmit}
           className="bg-white p-6 rounded-lg shadow-md lg:w-8/12 mx-auto space-y-4"
         >
           {/* Artifact Name */}
           <div className="form-control">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 ">
               Artifact Name
             </label>
             <input

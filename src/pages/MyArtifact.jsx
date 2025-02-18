@@ -133,7 +133,7 @@ const MyArtifact = () => {
                     <div className="flex gap-3 mt-6">
                       <button
                         onClick={() => navigate(`/update-artifact/${artifact._id}`)}
-                        className="btn btn-primary flex-grow"
+                        className="btn bg-yellow-400 btn-primary flex-grow"
                       >
                         Update
                       </button>

@@ -14,16 +14,16 @@ const LikedArtifact = () => {
   const { user } = useContext(AuthContext); // Get logged-in user data
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-white dark:bg-gray-800">
       {/* Header with Navbar */}
       <header className="mt-16">
         <Navbar />
       </header>
 
       {/* Main Content */}
-      <section className="flex-grow py-8 bg-gray-50">
+      <section className="flex-grow py-8 bg-gray-50 dark:bg-gray-800">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center text-gray-800 mb-6">
+          <h2 className="text-4xl font-bold text-center text-gray-800 mb-6 dark:text-gray-200">
             Liked Artifacts
           </h2>
 

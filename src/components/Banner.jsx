@@ -13,7 +13,7 @@ const Banner = () => {
     <div className="w-11/12 lg:w-8/12 mx-auto">
       <section
         id="banner"
-        className="p-10 text-center text-gray-800"
+        className="p-10 text-center text-gray-800 dark:text-white"
       >
         {/* Swiper Slider for Banner */}
         <Swiper
@@ -79,9 +79,9 @@ const Banner = () => {
         {/* Welcome Message */}
         <div className="max-w-3xl mx-auto">
           <div>
-            <h2 className="text-4xl sm:text-3xl font-extrabold mb-4 text-gray-800">
+            <h2 className="text-4xl sm:text-3xl font-extrabold mb-4">
               Welcome to{" "}
-              <span className="text-yellow-500">
+              <span className="text-yellow-500 dark:text-yellow-400">
                 Historical Artifacts Tracker!
               </span>
             </h2>
@@ -102,7 +102,7 @@ const Banner = () => {
           </div>
 
           <Fade>
-            <p className="text-lg text-gray-600 mb-6">
+            <p className="text-lg text-gray-600 dark:text-white mb-6">
               Join us in discovering, preserving, and exploring artifacts from
               around the world. Every artifact tells a story!
             </p>
@@ -111,7 +111,7 @@ const Banner = () => {
           {/* Start Exploring Button */}
           <Link
             to="/all-artifacts"
-            className="bg-yellow-500 text-gray-900 font-semibold px-6 py-3 rounded-lg hover:bg-yellow-600 hover:text-gray-100 transition"
+            className="bg-yellow-500 text-gray-900 dark:text-white font-semibold px-6 py-3 rounded-lg hover:bg-yellow-600 hover:text-gray-100 transition"
           >
             Explore Artifacts Now
           </Link>
